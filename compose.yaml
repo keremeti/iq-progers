@@ -1,0 +1,21 @@
+services:
+  iq-progers:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on: 
+      - postgres 
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: iq_progers_db
+      POSTGRES_PASSWORD: XCVsdf90
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+
+volumes:
+    postgres:

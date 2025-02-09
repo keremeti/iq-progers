@@ -1,0 +1,205 @@
+basePath: /v1/
+definitions:
+  v1.WrapperResponse:
+    properties:
+      code:
+        description: Код запроса
+        example: 200
+        type: integer
+      data:
+        description: Запрашиваемые данные при успешном запросе
+      message:
+        description: Сообщение об ошибке
+        example: ',Все пропало'
+        type: string
+    required:
+    - code
+    type: object
+  v1.filterRequest:
+    properties:
+      user_id:
+        example: 2
+        type: integer
+    required:
+    - user_id
+    type: object
+  v1.remittanceRequest:
+    properties:
+      recipient_id:
+        example: 2
+        type: integer
+      sender_id:
+        example: 1
+        type: integer
+      sum:
+        example: "100"
+        type: string
+    required:
+    - recipient_id
+    - sender_id
+    - sum
+    type: object
+  v1.transactionResponse:
+    properties:
+      comment:
+        example: Пополнение баланса
+        type: string
+      date:
+        example: 21212
+        type: integer
+      id:
+        example: 12
+        type: integer
+      sum:
+        example: "100"
+        type: string
+      type:
+        example: RECHARGE
+        type: string
+      user_id:
+        example: 2
+        type: integer
+    required:
+    - comment
+    - date
+    - id
+    - sum
+    - type
+    - user_id
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger API
+  version: "1.0"
+paths:
+  /v1/transactions:
+    post:
+      consumes:
+      - application/json
+      description: Get transactions by filter
+      parameters:
+      - description: Количество записей на одной странице
+        in: query
+        name: limit
+        type: integer
+      - description: Страница списка
+        in: query
+        name: page
+        type: integer
+      - description: Фильтр для транзакций
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.filterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.WrapperResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/v1.transactionResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+      summary: Get transactions
+      tags:
+      - transactions
+  /v1/transactions/top-up:
+    post:
+      consumes:
+      - application/json
+      description: Top up balance
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.WrapperResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/v1.transactionResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+      summary: Top up balance
+      tags:
+      - transactions
+  /v1/transactions/transfer:
+    post:
+      consumes:
+      - application/json
+      description: Transfer money between users
+      parameters:
+      - description: Данные для перевода средств
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.remittanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.WrapperResponse'
+      summary: Transfer money
+      tags:
+      - transactions
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
