@@ -26,7 +26,6 @@ import (
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
-	// Configuration
 	conf := config.New()
 
 	app.Run(conf)

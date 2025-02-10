@@ -16,8 +16,6 @@ type transactionHandler struct {
 	transferMoneyService service.ITransferMoneyService
 }
 
-// Пополнение баланса пользователя
-// Перевод денег от одного пользователя к другом
 func newTransactionHandler(handler *gin.RouterGroup, l *logger.Logger,
 	tub service.ITopUpBalanceService,
 	tm service.ITransferMoneyService) {

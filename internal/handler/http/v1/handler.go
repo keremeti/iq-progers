@@ -13,8 +13,8 @@ import (
 )
 
 func NewHandler(handler *gin.Engine, l *logger.Logger, cfg *config.Config,
-	tub service.ITopUpBalanceService,
-	tm service.ITransferMoneyService,
+	tubs service.ITopUpBalanceService,
+	tms service.ITransferMoneyService,
 	gs service.IGetTransactionsService) {
 	// Options
 	handler.Use(gin.Logger())
@@ -27,7 +27,7 @@ func NewHandler(handler *gin.Engine, l *logger.Logger, cfg *config.Config,
 	// Routers
 	h := handler.Group("v1/transactions")
 	{
-		newTransactionHandler(h, l, tub, tm)
+		newTransactionHandler(h, l, tubs, tms)
 		newTransactionsHandler(h, l, gs)
 	}
 }

@@ -56,7 +56,7 @@ func Run(cfg *config.Config) {
 		tranRepo,
 		balRepo,
 	)
-	l.Debug("app - Run - Usecases started")
+	l.Debug("app - Run - Services started")
 
 	handler := gin.New()
 	v1.NewHandler(handler, l, cfg, tubSer, tfmSer, gtSer)

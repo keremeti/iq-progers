@@ -17,7 +17,6 @@ type transactionsHandler struct {
 	gts service.IGetTransactionsService
 }
 
-// Просмотр 10 последних операций пользователя
 func newTransactionsHandler(handler *gin.RouterGroup, l *logger.Logger,
 	gts service.IGetTransactionsService) {
 	r := &transactionsHandler{l, gts}
